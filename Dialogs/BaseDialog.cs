@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
@@ -9,12 +6,12 @@ using Microsoft.Bot.Schema;
 
 namespace Microsoft.BotBuilderSamples.Dialogs
 {
-    public class CancelAndHelpDialog : ComponentDialog
+    public class BaseDialog : ComponentDialog
     {
         private const string HelpMsgText = "Show help here";
         private const string CancelMsgText = "Cancelling...";
 
-        public CancelAndHelpDialog(string id)
+        public BaseDialog(string id)
             : base(id)
         {
         }
