@@ -1,3 +1,4 @@
+appsettings.json
 *.dll
 *.pdb
 obj/**
@@ -8,4 +9,3 @@ runtimes/**
 publish.cmd
 packages/
 .vs/
-appsettings.json
