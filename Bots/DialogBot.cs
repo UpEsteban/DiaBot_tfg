@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreBot.Resources;
+using CoreBot.Resources.Cards;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Schema;
@@ -48,40 +50,26 @@ namespace Microsoft.BotBuilderSamples.Bots
             await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
         }
 
-
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
             foreach (var member in membersAdded)
             {
-                // Greet anyone that was not the target (recipient) of this message.
-                // To learn more about Adaptive Cards, see https://aka.ms/msbot-adaptivecards for more details.
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    var welcomeCard = CreateAdaptiveCardAttachment();
-                    var response = MessageFactory.Attachment(welcomeCard, ssml: "Welcome to Bot Framework!");
-                    await turnContext.SendActivityAsync(response, cancellationToken);
-                    await Dialog.RunAsync(turnContext, ConversationState.CreateProperty<DialogState>("DialogState"), cancellationToken);
+                    var reply = GetWelcomeActivity((Activity)turnContext.Activity);
+                    await turnContext.SendActivityAsync(reply, cancellationToken);
                 }
             }
         }
 
-        // Load attachment from embedded resource.
-        private Attachment CreateAdaptiveCardAttachment()
+        private Activity GetWelcomeActivity(Activity activity)
         {
-            var cardResourcePath = "CoreBot.Cards.welcomeCard.json";
+            var reply = activity.CreateReply();
+            reply.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            reply.Attachments = Cards.Welcome();
+            reply.Text = GetText.Welcome;
 
-            using (var stream = GetType().Assembly.GetManifestResourceStream(cardResourcePath))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    var adaptiveCard = reader.ReadToEnd();
-                    return new Attachment()
-                    {
-                        ContentType = "application/vnd.microsoft.card.adaptive",
-                        Content = JsonConvert.DeserializeObject(adaptiveCard),
-                    };
-                }
-            }
+            return reply;
         }
     }
 }

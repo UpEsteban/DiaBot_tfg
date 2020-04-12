@@ -10,7 +10,7 @@ using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.Luis;
 namespace CognitiveModels
 {
-    public partial class DiabotModel: IRecognizerConvert
+    public partial class DiabotModel : IRecognizerConvert
     {
         [JsonProperty("text")]
         public string Text;
@@ -18,14 +18,15 @@ namespace CognitiveModels
         [JsonProperty("alteredText")]
         public string AlteredText;
 
-        public enum Intent {
-            None, 
-            Profile_AddAllergy, 
-            Profile_DeleteAllergy, 
-            Profile_DeleteUser, 
-            Profile_MyAllergies, 
-            Recipe_Allergy, 
-            Recipe_Search, 
+        public enum Intent
+        {
+            None,
+            Profile_AddAllergy,
+            Profile_DeleteAllergy,
+            Profile_DeleteUser,
+            Profile_MyAllergies,
+            Recipe_Allergy,
+            Recipe_Search,
             Welcome
         };
         [JsonProperty("intents")]
@@ -73,7 +74,7 @@ namespace CognitiveModels
         public _Entities Entities;
 
         [JsonExtensionData(ReadData = true, WriteData = true)]
-        public IDictionary<string, object> Properties {get; set; }
+        public IDictionary<string, object> Properties { get; set; }
 
         public void Convert(dynamic result)
         {
